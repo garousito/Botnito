@@ -1,35 +1,49 @@
 # Botnito WhatsApp Base (Termux + MT Manager)
 
-Base propia de bot WhatsApp creada en Node.js + Baileys, ahora expandida como **BOT DE JUEGO DE ROL con IA (ChatGPT API)**.
+Base de bot WhatsApp con Node.js + Baileys, enfocada en RPG con IA y soporte dual:
 
-## Qué incluye ahora
+- **Modo texto** (narrativa y respuestas escritas)
+- **Modo audio** (master envía notas de voz y jugadores responden por audio o texto)
 
-- Flujo de partida RPG tipo Dungeon Master.
-- IA narrativa con API de OpenAI.
+## Qué incluye
+
+- Flujo RPG tipo Dungeon Master con OpenAI.
+- Selección de modo antes de iniciar la partida.
+- Generación de imagen inicial de la aventura.
+- Transcripción de audio de jugador (STT) en modo audio.
+- Narración por voz del master (TTS) en modo audio.
 - Estado por jugador y por chat (sin mezclar historias en grupos).
 - Registro de jugadores estilo Naufrabot (`/registro`).
-- Persistencia en `data.json`:
-  - registro de usuarios,
-  - partidas activas,
-  - historial de decisiones,
-  - progreso e inventario básico.
 
-## Comandos principales
+## Comandos
 
 - `/registro Nombre|Edad` → registra jugador.
-- `/rol` → inicia partida y pide tema.
-- `/estado` → muestra estado de partida actual.
+- `/rol` → inicia partida (elige modo, tema y estilo de arte).
+- `/estado` → muestra estado actual.
 - `/salir` → termina partida.
-- `/help` → menú de comandos.
+- `/dado 20` → tirada opcional.
 
-## Flujo RPG
+## Flujo completo
 
-1. Usuario ejecuta `/rol`.
-2. Bot pide tema narrativo.
-3. Usuario responde tema (fantasía, pesca, terror, etc.).
-4. Bot genera introducción con IA.
-5. Cada respuesta del jugador continúa la historia vía API.
-6. El bot adapta narrativa con consecuencias + siguiente dilema.
+1. `/rol`
+2. Elegir modo: `texto` o `audio`
+3. Escribir tema
+4. Escribir estilo artístico
+5. Bot genera intro + imagen
+6. Durante partida:
+   - modo texto: escribe decisiones
+   - modo audio: envía audio o texto (el bot transcribe audio)
+
+## Cómo escribir estilo artístico correctamente
+
+Plantilla:
+
+`estilo + iluminación + encuadre + nivel de detalle`
+
+Ejemplos:
+- `fantasía oscura, luz de luna, plano general cinematográfico, ultra detallado`
+- `anime medieval, atardecer cálido, plano medio, colores vibrantes`
+- `realismo mágico, niebla suave, vista panorámica, alto detalle`
 
 ## Variables de entorno
 
@@ -42,38 +56,13 @@ AUTO_READ=false
 TZ=America/Mexico_City
 OPENAI_API_KEY=sk-xxxx
 OPENAI_MODEL=gpt-5-mini
+OPENAI_IMAGE_MODEL=gpt-image-1
+OPENAI_TTS_MODEL=gpt-4o-mini-tts
+OPENAI_TTS_VOICE=alloy
+OPENAI_TRANSCRIPTION_MODEL=gpt-4o-mini-transcribe
 ```
 
-> Si `OPENAI_API_KEY` no está configurada, el bot responde con un fallback narrativo local para pruebas.
-
-## Estructura
-
-```txt
-src/
-  commands/
-    estado.js
-    registro.js
-    rol.js
-    salir.js
-    help.js
-    ping.js
-    owner.js
-  lib/
-    ai.js
-    commands.js
-    playerRegistry.js
-    roleGame.js
-    store.js
-  config.js
-  index.js
-scripts/
-  start.sh
-session/
-.env.example
-data.json (se crea solo)
-```
-
-## Instalación en Termux
+## Instalación rápida (Termux)
 
 ```bash
 pkg update -y && pkg upgrade -y
@@ -85,10 +74,3 @@ cp .env.example .env
 nano .env
 npm start
 ```
-
-## Uso con MT Manager
-
-- Edita comandos en `src/commands/`.
-- Ajusta IA en `src/lib/ai.js`.
-- Ajusta estado de juego en `src/lib/roleGame.js`.
-- Reinicia con `npm start` o `bash scripts/start.sh`.

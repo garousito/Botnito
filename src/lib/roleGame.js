@@ -20,8 +20,10 @@ function startGame(chatId, sender) {
   const game = {
     chatId,
     playerId: sender,
+    mode: null,
     theme: null,
-    status: 'awaiting_theme',
+    artStyle: null,
+    status: 'awaiting_mode',
     history: [],
     progress: 'Inicio de aventura',
     decisions: [],
@@ -33,13 +35,37 @@ function startGame(chatId, sender) {
   return saveGame(game);
 }
 
+function setMode(chatId, sender, mode) {
+  const game = getGame(chatId, sender);
+  if (!game) return null;
+
+  game.mode = mode;
+  game.status = 'awaiting_theme';
+  game.progress = `Modo seleccionado: ${mode}`;
+  game.updatedAt = new Date().toISOString();
+
+  return saveGame(game);
+}
+
 function setTheme(chatId, sender, theme) {
   const game = getGame(chatId, sender);
   if (!game) return null;
 
   game.theme = theme;
+  game.status = 'awaiting_style';
+  game.progress = `Tema seleccionado: ${theme}`;
+  game.updatedAt = new Date().toISOString();
+
+  return saveGame(game);
+}
+
+function setArtStyle(chatId, sender, artStyle) {
+  const game = getGame(chatId, sender);
+  if (!game) return null;
+
+  game.artStyle = artStyle;
   game.status = 'active';
-  game.progress = `Mundo: ${theme}`;
+  game.progress = `Modo: ${game.mode} | Mundo: ${game.theme} | Estilo: ${artStyle}`;
   game.updatedAt = new Date().toISOString();
 
   return saveGame(game);
@@ -74,7 +100,9 @@ function endGame(chatId, sender) {
 module.exports = {
   startGame,
   getGame,
+  setMode,
   setTheme,
+  setArtStyle,
   appendNarrative,
   endGame
 };

@@ -15,7 +15,12 @@ module.exports = {
     }
 
     const active = getGame(from, sender);
-    if (active?.status === 'active' || active?.status === 'awaiting_theme') {
+    if (
+      active?.status === 'active' ||
+      active?.status === 'awaiting_mode' ||
+      active?.status === 'awaiting_theme' ||
+      active?.status === 'awaiting_style'
+    ) {
       await sock.sendMessage(from, {
         text: '🎮 Ya tienes una partida en curso. Usa /estado para verla o /salir para terminarla.'
       });
@@ -24,7 +29,10 @@ module.exports = {
 
     startGame(from, sender);
     await sock.sendMessage(from, {
-      text: '🧙 Dame un tema para la historia (fantasía, pesca, terror, supervivencia, etc.)'
+      text:
+        '🧭 *Selecciona modo de partida*\n' +
+        '- Escribe *texto* para narrativa escrita.\n' +
+        '- Escribe *audio* para narrativa por notas de voz (el master enviará audios y puedes responder con audio o texto).'
     });
   }
 };

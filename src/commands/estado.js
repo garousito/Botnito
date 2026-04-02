@@ -15,7 +15,10 @@ module.exports = {
     await sock.sendMessage(from, {
       text:
         `📜 *Estado de partida*\n` +
+        `Estado: ${game.status}\n` +
+        `Modo: ${game.mode || 'Pendiente'}\n` +
         `Tema: ${game.theme || 'Pendiente'}\n` +
+        `Estilo visual: ${game.artStyle || 'Pendiente'}\n` +
         `Progreso: ${game.progress}\n` +
         `Turno: ${game.turn}\n` +
         `Última decisión: ${lastDecision}\n` +

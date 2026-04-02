@@ -10,7 +10,11 @@ const config = {
   timezone: process.env.TZ || 'America/Mexico_City',
   sessionDir: path.resolve(process.cwd(), 'session'),
   openaiApiKey: process.env.OPENAI_API_KEY || '',
-  openaiModel: process.env.OPENAI_MODEL || 'gpt-5-mini'
+  openaiModel: process.env.OPENAI_MODEL || 'gpt-5-mini',
+  openaiImageModel: process.env.OPENAI_IMAGE_MODEL || 'gpt-image-1',
+  openaiTtsModel: process.env.OPENAI_TTS_MODEL || 'gpt-4o-mini-tts',
+  openaiTtsVoice: process.env.OPENAI_TTS_VOICE || 'alloy',
+  openaiTranscriptionModel: process.env.OPENAI_TRANSCRIPTION_MODEL || 'gpt-4o-mini-transcribe'
 };
 
 module.exports = config;
