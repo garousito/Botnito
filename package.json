@@ -1,0 +1,19 @@
+{
+  "name": "botnito-whatsapp-base",
+  "version": "0.1.0",
+  "description": "Base limpia de bot de WhatsApp para Termux + MT Manager, inspirada en el flujo de Naufrabot-base.",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "NODE_ENV=development node src/index.js",
+    "check": "node --check src/index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.21",
+    "chalk": "^4.1.2",
+    "dotenv": "^16.4.5",
+    "pino": "^9.3.2",
+    "openai": "^4.104.0"
+  }
+}
